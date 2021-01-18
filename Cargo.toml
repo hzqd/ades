@@ -1,0 +1,21 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[package]
+name = "cryption"
+version = "0.1.0"
+authors = ["hzqd <hzqelf@yeah.net>"]
+edition = "2018"
+
+[[bin]]
+name = "aes"
+path = "src/aes.rs"
+
+[[bin]]
+name = "des"
+path = "src/des.rs"
+
+[[bin]]
+name = "ades"
+path = "src/ades.rs"
+
+[dependencies]
+crypto = { path = "./crypto" }

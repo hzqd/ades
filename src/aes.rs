@@ -19,8 +19,8 @@ fn main() {
     // Initialize the remaining arguments:
     args[3].padding(32).as_bytes().then(|key| {
         // Crypto as partially applied function:
-        let aes_enc = |data| aes_enc(key, data);
-        let aes_dec = |data| aes_dec(key, data);
+        let aes_enc = |data| aes_enc(key)(data);
+        let aes_dec = |data| aes_dec(key)(data);
 
         // Encryption and decryption:
         match &**mode {

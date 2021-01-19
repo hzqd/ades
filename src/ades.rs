@@ -20,10 +20,10 @@ fn main() {
     args[3].padding(32).as_bytes().then(|aes_key|
         args[4].padding(24).as_bytes().then(|des_key| {
             // Crypto as partially applied function:
-            let aes_enc = |data| aes_enc(aes_key, data);
-            let aes_dec = |data: &_| aes_dec(aes_key, data);
-            let des_enc = |data: &_| des_enc(des_key, data);
-            let des_dec = |data| des_dec(des_key, data);
+            let aes_enc = |data| aes_enc(aes_key)(data);
+            let aes_dec = |data: &_| aes_dec(aes_key)(data);
+            let des_enc = |data: &_| des_enc(des_key)(data);
+            let des_dec = |data| des_dec(des_key)(data);
 
             // Encryption and decryption:
             match &**mode {

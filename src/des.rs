@@ -1,5 +1,5 @@
 use std::fs;
-use crypto::{Padding, KtStd, FnOnceExt, des_enc, des_dec};
+use ades::{Padding, KtStd, FnOnceExt, des_enc, des_dec};
 
 // des: enc/dec file-name password file-name
 

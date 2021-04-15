@@ -1,9 +1,12 @@
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [package]
-name = "cryption"
+name = "ades"
 version = "0.1.0"
 authors = ["hzqd <hzqelf@yeah.net>"]
 edition = "2018"
+description = "AES & DES, Encryption & Decryption"
+repository = "https://github.com/ikfr/ades-rs"
+license = "MIT OR Apache-2.0"
 
 [[bin]]
 name = "aes"
@@ -18,4 +21,5 @@ name = "ades"
 path = "src/ades.rs"
 
 [dependencies]
-crypto = { path = "./crypto" }
+openssl = "0.10"
+lazy_static = "1.4"

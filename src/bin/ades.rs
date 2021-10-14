@@ -1,5 +1,6 @@
 use std::fs;
-use ades::{Padding, KtStd, FnOnceExt, aes_enc, aes_dec, des_enc, des_dec};
+use ades::{Padding, aes_enc, aes_dec, des_enc, des_dec};
+use aoko::{no_std::ext::AnyExt1, standard::ext::StdFnOnceExt};
 
 // ades: enc/dec file-name aes_passwd des_passwd file-name
 
@@ -14,11 +15,11 @@ fn main() {
 
     // Read file data & Write file as partially applied function:
     let data = fs::read(file_in).unwrap();
-    let write = |text| fs::write.partial(text)(file_out.clone()).unwrap();
+    let write = |text| fs::write.partial2(text)(file_out.clone()).unwrap();
 
     // Initialize the remaining arguments:
-    args[3].padding(32).as_bytes().then(|aes_key|
-        args[4].padding(24).as_bytes().then(|des_key| {
+    args[3].padding(32).as_bytes().let_owned(|aes_key|
+        args[4].padding(24).as_bytes().let_owned(|des_key| {
             // Crypto as partially applied function:
             let aes_enc = |data| aes_enc(aes_key)(data);
             let aes_dec = |data: &_| aes_dec(aes_key)(data);
@@ -28,11 +29,11 @@ fn main() {
             // Encryption and decryption:
             match &**mode {
                 "enc" => aes_enc(&data)
-                            .then(|ctx| des_enc(&ctx))
-                            .then(|byt| write(byt)),
+                            .let_owned(|ctx| des_enc(&ctx))
+                            .let_owned(|byt| write(byt)),
                 "dec" => des_dec(&data)
-                            .then(|ctx| aes_dec(&ctx))
-                            .then(|byt| write(byt)),
+                            .let_owned(|ctx| aes_dec(&ctx))
+                            .let_owned(|byt| write(byt)),
                 _ => ()
             }
         })

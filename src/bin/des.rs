@@ -1,5 +1,6 @@
 use std::fs;
-use ades::{Padding, KtStd, FnOnceExt, des_enc, des_dec};
+use ades::{Padding, des_enc, des_dec};
+use aoko::{no_std::ext::AnyExt1, standard::ext::StdFnOnceExt};
 
 // des: enc/dec file-name password file-name
 
@@ -14,18 +15,18 @@ fn main() {
 
     // Read file data & Write file as partially applied function:
     let data = fs::read(file_in).unwrap();
-    let write = |text| fs::write.partial(text)(file_out.clone()).unwrap();
+    let write = |text| fs::write.partial2(text)(file_out.clone()).unwrap();
 
     // Initialize the remaining arguments:
-    args[3].padding(24).as_bytes().then(|key| {
+    args[3].padding(24).as_bytes().let_owned(|key| {
         // Crypto as partially applied function:
         let des_enc = |data| des_enc(key)(data);
         let des_dec = |data| des_dec(key)(data);
 
         // Encryption and decryption:
         match &**mode {
-            "enc" => des_enc(&data).then(|byt| write(byt)),
-            "dec" => des_dec(&data).then(|byt| write(byt)),
+            "enc" => des_enc(&data).let_owned(|byt| write(byt)),
+            "dec" => des_dec(&data).let_owned(|byt| write(byt)),
             _ => ()
         }
     })

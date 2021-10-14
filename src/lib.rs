@@ -38,21 +38,3 @@ impl Padding for &String {
         } else { self.clone() }
     }
 }
-
-pub trait KtStd {
-    fn then<R>(self, block: impl FnOnce(Self) -> R) -> R where Self: Sized {
-        block(self)
-    }
-}
-
-impl<T> KtStd for T {}
-
-pub trait FnOnceExt<P1, P2, R> {
-    fn partial(self, p2: P2) -> Box<dyn FnOnce(P1) -> R>;
-}
-
-impl<P1, P2: 'static, R, F> FnOnceExt<P1, P2, R> for F where F: FnOnce(P1, P2) -> R + 'static {
-    fn partial(self, p2: P2) -> Box<dyn FnOnce(P1) -> R> {
-        Box::new(move |p1| self(p1, p2))
-    }
-}

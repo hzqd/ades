@@ -1,6 +1,6 @@
 use std::fs;
 use ades::{Padding, des_enc, des_dec};
-use aoko::{no_std::ext::AnyExt1, standard::ext::StdFnOnceExt};
+use aoko::no_std::ext::{AnyExt1, FnOnceExt};
 
 // des: enc/dec file-name password file-name
 

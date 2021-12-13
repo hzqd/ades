@@ -2,6 +2,9 @@
 extern crate lazy_static;
 use openssl::symm::{Cipher, encrypt, decrypt};
 
+pub mod cli;
+pub mod logic;
+
 pub const AES_IV: &[u8] = b",E@*{O.x=#z~}C>Z";
 pub const DES_IV: &[u8] = b"k+Q|R](h";
 

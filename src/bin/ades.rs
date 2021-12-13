@@ -1,41 +1,22 @@
-use std::fs;
-use ades::{Padding, aes_enc, aes_dec, des_enc, des_dec};
-use aoko::no_std::ext::{AnyExt1, FnOnceExt};
+use ::ades::{logic::{ades::ades, aes::aes, des::des}, cli::{TimeUnit, get_args, Algorithm}};
+use aoko::{no_std::functions::ext::AnyExt1, standard::functions::fun::{measure_time_with_value, time_conversion_with_unit}};
+use std::time::Duration;
 
-// ades: enc/dec file-name aes_passwd des_passwd file-name
+fn algo() -> (impl FnOnce(Duration) -> u128, TimeUnit) {
+    // 解析命令行参数
+    let (r#in, out, aes_key, des_key, unit, subcmd) = get_args().let_owned(|s| (s.input, s.output, s.aes_key, s.des_key, s.time, s.subcmd));
+    // 判断算法和加解密(子命令)
+    use Algorithm::*;
+    match subcmd {
+        ADES(it) => ades(r#in, out, aes_key, des_key, it.encrypt),
+        AES(it) => aes(r#in, out, aes_key, it.encrypt),
+        DES(it) => des(r#in, out, des_key, it.encrypt),
+    }
+    // 返回转换函数和计时单位
+    time_conversion_with_unit(unit)
+}
 
 fn main() {
-    // Get command line arguments:
-    let args = std::env::args().collect::<Vec<_>>();
-
-    // Get arguments values: (delay initialize [3] & [4] because of more elegant code)
-    let mode = &args[1];
-    let file_in = &args[2];
-    let file_out = &args[5];
-
-    // Read file data & Write file as partially applied function:
-    let data = fs::read(file_in).unwrap();
-    let write = |text| fs::write.partial2(text)(file_out.clone()).unwrap();
-
-    // Initialize the remaining arguments:
-    args[3].padding(32).as_bytes().let_owned(|aes_key|
-        args[4].padding(24).as_bytes().let_owned(|des_key| {
-            // Crypto as partially applied function:
-            let aes_enc = |data| aes_enc(aes_key)(data);
-            let aes_dec = |data: &_| aes_dec(aes_key)(data);
-            let des_enc = |data: &_| des_enc(des_key)(data);
-            let des_dec = |data| des_dec(des_key)(data);
-
-            // Encryption and decryption:
-            match &**mode {
-                "enc" => aes_enc(&data)
-                            .let_owned(|ctx| des_enc(&ctx))
-                            .let_owned(|byt| write(byt)),
-                "dec" => des_dec(&data)
-                            .let_owned(|ctx| aes_dec(&ctx))
-                            .let_owned(|byt| write(byt)),
-                _ => ()
-            }
-        })
-    )
+    measure_time_with_value(algo)
+        .let_owned(|((f, u), e)| println!("Execution time: {} {:?}.", f(e), u));
 }

@@ -4,7 +4,7 @@ use clap::Parser;
 /// AES & DES, Encryption and Decryption.
 
 #[derive(Parser)]
-#[clap(version = "0.1.3", author = "hzqd <hzqelf@yeah.net>")]
+#[clap(version = "0.1.5", author = "hzqd <hzqelf@yeah.net>")]
 pub struct Args {
     /// Specify the input file name
     #[clap(short, long)]
@@ -34,7 +34,7 @@ pub struct Args {
 #[derive(Parser)]
 pub enum Algorithm {
     /// A subcommand for specify using AES and DES to Decrypt or Encrypt by -e
-    ADES(Encryption),
+    M(Encryption),
     /// A subcommand for specify using AES to Decrypt or Encrypt by -e
     AES(Encryption),
     /// A subcommand for specify using DES to Decrypt or Encrypt by -e

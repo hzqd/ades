@@ -2,8 +2,6 @@ use crate::{Padding, aes_enc, aes_dec, des_enc, des_dec};
 use aoko::{no_std::functions::ext::{AnyExt1, FnOnceExt}, l};
 use std::fs;
 
-// ades: enc/dec file-name aes_passwd des_passwd file-name
-
 pub fn ades(r#in: String, out: String, aes: String, des: String, encrypt: bool) {
     // Read file data & Write file as partially applied function:
     l!(

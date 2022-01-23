@@ -1,4 +1,4 @@
-use ::ades::{logic::{ades::ades, aes::aes, des::des}, cli::{TimeUnit, get_args, Algorithm}};
+use ades::{logic::{ades::ades, aes::aes, des::des}, cli::{TimeUnit, get_args, Algorithm}};
 use aoko::{no_std::functions::ext::AnyExt1, standard::functions::fun::{measure_time_with_value, time_conversion_with_unit}};
 use std::time::Duration;
 
@@ -8,7 +8,7 @@ fn algo() -> (impl FnOnce(Duration) -> u128, TimeUnit) {
     // 判断算法和加解密(子命令)
     use Algorithm::*;
     match subcmd {
-        ADES(it) => ades(r#in, out, aes_key, des_key, it.encrypt),
+        M(it) => ades(r#in, out, aes_key, des_key, it.encrypt),
         AES(it) => aes(r#in, out, aes_key, it.encrypt),
         DES(it) => des(r#in, out, des_key, it.encrypt),
     }

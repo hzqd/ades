@@ -2,8 +2,6 @@ use crate::{Padding, aes_enc, aes_dec};
 use aoko::{no_std::functions::ext::{AnyExt1, FnOnceExt}, l};
 use std::fs;
 
-// aes: enc/dec file-name password file-name
-
 pub fn aes(r#in: String, out: String, aes: String, encrypt: bool) {
     // Read file data & Write file as partially applied function:
     l!(

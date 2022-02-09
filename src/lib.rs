@@ -33,11 +33,11 @@ pub trait Padding {
     fn padding(self, n: usize) -> String;
 }
 
-impl Padding for &String {
+impl Padding for &str {
     fn padding(self, n: usize) -> String {
         if self.len() < n {
             let init = String::from("<Ra{V)*t%o&:`1q^/Y|#U+k-W$'Fl7cJ");
             format!("{}{}", self, &init[..n-self.len()])
-        } else { self.clone() }
+        } else { self.to_string() }
     }
 }

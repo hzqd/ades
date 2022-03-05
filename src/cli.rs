@@ -4,7 +4,7 @@ use clap::Parser;
 /// AES & DES, Encryption and Decryption.
 
 #[derive(Parser)]
-#[clap(version = "0.1.6", author = "hzqd <hzqelf@yeah.net>")]
+#[clap(version = "0.1.7", author = "hzqd <hzqelf@yeah.net>")]
 pub struct Args {
     /// Specify the input file name
     #[clap(short, long)]

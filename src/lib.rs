@@ -13,19 +13,19 @@ lazy_static! {
     pub static ref DES_CIPHER: Cipher = Cipher::des_ede3_cfb64();
 }
 
-pub fn aes_enc(key: &[u8]) -> impl FnOnce(&[u8]) -> Vec<u8> + '_ {
+pub fn aes_enc(key: &[u8]) -> impl Fn(&[u8]) -> Vec<u8> + '_ {
     move |data| encrypt(*AES_CIPHER, key, Some(AES_IV), data).unwrap()
 }
 
-pub fn aes_dec(key: &[u8]) -> impl FnOnce(&[u8]) -> Vec<u8> + '_ {
+pub fn aes_dec(key: &[u8]) -> impl Fn(&[u8]) -> Vec<u8> + '_ {
     move |data| decrypt(*AES_CIPHER, key, Some(AES_IV), data).unwrap()
 }
 
-pub fn des_enc(key: &[u8]) -> impl FnOnce(&[u8]) -> Vec<u8> + '_ {
+pub fn des_enc(key: &[u8]) -> impl Fn(&[u8]) -> Vec<u8> + '_ {
     move |data| encrypt(*DES_CIPHER, key, Some(DES_IV), data).unwrap()
 }
 
-pub fn des_dec(key: &[u8]) -> impl FnOnce(&[u8]) -> Vec<u8> + '_ {
+pub fn des_dec(key: &[u8]) -> impl Fn(&[u8]) -> Vec<u8> + '_ {
     move |data| decrypt(*DES_CIPHER, key, Some(DES_IV), data).unwrap()
 }
 
